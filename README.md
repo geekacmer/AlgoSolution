@@ -1,4 +1,4 @@
 Code
 ====
 
-Library for Algorithm Contest
+Solutions for Problems of Algorithm Contests and Online Judges
