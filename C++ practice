@@ -1,0 +1,104 @@
+//This is a simple code about the fundamental C++ grammer
+//It contains three files,including:
+///////////////////////////////////////
+//GradeBook.h
+#include<string>
+using namespace std;
+class GradeBook
+{
+  public:
+  GradeBook(string);
+  void setCourseName(string);
+  string getCourseName();
+  void displayMessage();
+  void ClasssAverage();
+
+  private:
+  string CourseName;
+};   
+////////////////////////////////////////
+
+//////////////////////////////////////////
+//GradeBook.cpp
+#include<iostream>
+#include<iomanip>
+#include"GradeBook.h"
+using namespace std;
+GradeBook::GradeBook(string name)
+{
+  setCourseName(name);
+}
+void GradeBook::setCourseName(string name)
+{
+  if(name.length()<=25)
+    CourseName=name;
+  else
+  {
+    CourseName=name.substr(0,25);
+    cout<<"Name\""<<name<<"\"";
+  }
+}
+string GradeBook::getCourseName()
+{
+  return CourseName;
+}
+void GradeBook::displayMessage()
+{
+  cout<<"Welcome to the GradeBook for\n"<<getCourseName()<<"!\n"<<endl;
+}
+void GradeBook::ClasssAverage()
+{
+  int total=0;
+  int gradecounter=0;
+  int grade;
+  double average;
+  cout<<"Enter grade or -1 to quit: ";
+  cin>>grade;
+  while(grade!=-1)
+  {
+    total+=grade;
+    gradecounter++;
+    cout<<"Enter grade or -1 to quit: ";
+    cin>>grade;
+  }
+  cout<<endl;
+  if(gradecounter!=0)
+  {
+    average=static_cast<double>(total)/gradecounter;
+    cout<<"Total of "<<gradecounter<<" grades entered is "<<total<<endl;
+    cout<<"Class average is "<<setprecision(2)<<fixed<<average<<endl;
+  }
+  else
+    cout<<"No grades was entered"<<endl;
+}
+/////////////////////////////////////////////////////
+
+/////////////////////////////////////////////////////
+Class_average.cpp
+#include<iostream>
+#include<cstdio>
+#include<cstring>
+#include<cstdlib>
+#include<cmath>
+#include<ctime>
+#include<algorithm>
+#include<string>
+#include<map>
+#include"GradeBook.h"
+using namespace std;
+int main()
+{
+  GradeBook myGradeBook("CS101 C++ Programming");
+  myGradeBook.displayMessage();
+  myGradeBook.ClasssAverage();
+  return 0;
+}
+//////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
