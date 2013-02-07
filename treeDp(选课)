@@ -1,0 +1,58 @@
+#include<iostream>
+#include<cstdio>
+#include<cstring>
+#include<cstdlib>
+#include<cmath>
+#include<ctime>
+#include<algorithm>
+using namespace std;
+const int MAXN=1e6+10;
+const int INF=0x3f3f3f3f;
+int dp[310][310],Cost[310],a[310];
+int flag[310];
+struct node
+{
+  int l,r;
+}tree[MAXN];
+void treeDp(int m,int n)
+{
+  if(dp[m][n])
+   return;
+  if(m==0 || n<=0)//注意边界不是完全背包
+   return;
+  treeDp(tree[m].r,n);
+  dp[m][n]=dp[m][n]>dp[tree[m].r][n]?dp[m][n]:dp[tree[m].r][n];
+  for(int i=1;i<=n;++i)
+   {
+     treeDp(tree[m].l,i-1);
+     treeDp(tree[m].r,n-i);
+     if(dp[m][n]<(dp[tree[m].l][i-1]+dp[tree[m].r][n-i]+Cost[m]))
+     {
+        dp[m][n]=(dp[tree[m].l][i-1]+dp[tree[m].r][n-i]+Cost[m]);
+        flag[m]=1;
+     }
+   }
+}
+int main()
+{
+  int i,n,m;
+  int x,y;
+  memset(a,0,sizeof(a));
+  scanf("%d%d",&n,&m);
+  for(i=1;i<=n;++i)
+  {
+    scanf("%d%d",&x,&y);
+    if(a[x]==0)//这里是多叉树转二叉树的左孩子，右兄弟（自己的右边是兄弟）的存储
+     tree[x].l=i;
+    else
+     tree[a[x]].r=i;
+    a[x]=i;
+    Cost[i]=y;
+  }
+  treeDp(tree[0].l,m);
+  printf("%d\n",dp[tree[0].l][m]);
+  //for(i=1;i<=n;++i)
+  // if(flag[i])
+  //  printf("%d\n",i);
+  return 0;
+}
