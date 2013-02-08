@@ -1,0 +1,89 @@
+#include<iostream>
+#include<cstdio>
+#include<cstring>
+#include<cstdlib>
+#include<cmath>
+#include<ctime>
+#include<algorithm>
+const int INF=1e7;//0x3f3f3f3f>10^9,Here:attention
+using namespace std;
+const int MAXN=1510;
+int head[MAXN],Cost[MAXN],dp[MAXN][MAXN];
+int root;
+bool fa[MAXN];
+struct node
+{
+  int va,next;
+}q[MAXN];
+void init()//Adjacent Martix
+{
+  int n,i,j,num=0;
+  int m,x,y;
+  scanf("%d",&n);
+  memset(head,-1,sizeof(head));
+  memset(fa,0,sizeof(fa));
+  for(i=0;i<n;++i)
+  {
+    scanf("%d%d%d",&x,&y,&m);
+    Cost[x]=y;
+    for(j=0;j<m;++j)
+    {
+     scanf("%d",&y);
+     fa[y]=1;
+     q[num].va=y;
+     q[num].next=head[x];//old head->next
+     head[x]=num++;//new head
+    }
+  }
+  for(i=1;i<=n;++i)
+   if(!fa[i])
+   {
+     root=i;
+     break;
+   }
+}
+void treeDp(int m,int k)//m->root
+{
+  int i,j,temp,min,delit;
+  if(dp[m][k])
+   return ;
+  dp[m][0]=Cost[m];//Cal dp[n][0]
+  dp[m][1]=0;
+  dp[m][2]=0;//Cal dp[n][2]
+  delit=INF;
+  for(i=head[m];i!=-1;i=q[i].next)
+  {
+    min=INF;
+    temp=q[i].va;
+    for(j=0;j<3;++j)
+    {
+     treeDp(temp,j);
+     if(dp[temp][j]<min)
+      min=dp[temp][j];
+    }
+    if(dp[temp][0]-dp[temp][1]<delit)
+     delit=dp[temp][0]-dp[temp][1];
+    dp[m][1]+=dp[temp][0]<dp[temp][1]?dp[temp][0]:dp[temp][1];
+    dp[m][0]+=min;
+    dp[m][2]+=dp[temp][1];
+  }
+  if(delit==INF)
+   dp[m][1]=INF;
+  else
+   dp[m][1]+=delit>0?delit:0;
+}
+int main()
+{
+  init();
+  int x,y,ans;
+  treeDp(root,0);
+  x=dp[root][0];
+  treeDp(root,1);
+  y=dp[root][1];
+ // treeDp(root,2);
+  //z=dp[root][2];
+  ans=x<y?x:y;
+  //ans=ans<z?ans:z;
+  printf("%d",ans);
+  return 0;
+}
