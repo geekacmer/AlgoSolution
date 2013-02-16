@@ -1,0 +1,66 @@
+http://acm.hdu.edu.cn/showproblem.php?pid=4291
+/*
+ID: Geek7
+LANG: C++
+TASK: 4291
+*/
+#include<iostream>
+#include<cstdio>
+#include<cstring>
+#include<cstdlib>
+#include<cmath>
+#include<algorithm>
+#include<ctime>
+#define LL long long
+using namespace std;
+LL a[2][2],b[2][2];
+void calMartix(LL a[2][2],LL b[2][2],LL Mod){
+  int i,j;
+  LL temp[2][2];
+  temp[0][0]=((a[0][0]*b[0][0])%Mod+(a[0][1]*b[1][0])%Mod)%Mod;
+  temp[0][1]=((a[0][0]*b[0][1])%Mod+(a[0][1]*b[1][1])%Mod)%Mod;
+  temp[1][0]=((a[1][0]*b[0][0])%Mod+(a[1][1]*b[1][0])%Mod)%Mod;
+  temp[1][1]=((a[1][0]*b[0][1])%Mod+(a[1][1]*b[1][1])%Mod)%Mod;
+  for(i=0;i<2;++i)
+   for(j=0;j<2;++j)
+     a[i][j]=temp[i][j];
+}
+LL calc(LL n,LL Mod){
+  a[0][0]=1;//how to create the martix is the key
+  a[0][1]=0;
+  a[1][0]=1;
+  a[1][1]=1;
+  b[0][0]=3;
+  b[0][1]=1;
+  b[1][0]=1;
+  b[1][1]=0;
+  while(n){
+    if(n&1) calMartix(a,b,Mod);
+    calMartix(b,b,Mod);
+    n>>=1;
+  }
+  return a[0][1];
+}
+int main(){
+  LL n;
+  while(~(scanf("%I64d",&n))){
+    printf("%I64d\n",calc(calc(calc(n,183120),222222224),1000000007));
+  }
+  return 0;
+}
+
+/*cal the repeating cycle(repetend)
+int main(){
+  long long i,j,k,ct=1;
+  i=1,j=3;
+  while(1){
+    k=(3*j+i)%222222224;
+    ct++;
+    if(j==0 && k==1)
+     break;
+    i=j;
+    j=k;
+  }
+  printf("%d\n",ct);
+  return 0;
+}*/
