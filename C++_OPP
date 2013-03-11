@@ -1,0 +1,94 @@
+/*
+ID: Geek7
+LANG: C++
+TASK: 1041
+*/
+#include<iostream>
+#include<cmath>
+#include<map>
+#include<cstring>
+#include<cstdio>
+#include<stdint.h>
+#include<cstdarg>
+#include<cstdio>
+#include<cassert>
+#include<vector>
+#include<string>
+#include<algorithm>
+#include<list>
+#include<set>
+#include<queue>
+#include<stack>
+#include<sstream>
+#include<numeric>
+#include<functional>
+#include<utility>
+#include<bitset>
+#define LL long long
+#define maxab(a,b) (a)>(b)?(a):(b)
+#define LL long long
+using namespace std;
+const int MAXN=1010;
+struct bigInteger{
+    public:
+     char a[MAXN];
+     bigInteger(){
+       memset(a,0,sizeof(a));
+     }
+     bigInteger operator +(bigInteger b);
+     bigInteger operator *(int b);
+     void print();
+     void operator =(bigInteger b);
+};
+void bigInteger::operator =(bigInteger b){
+  for(int i=0;i<MAXN;++i)
+    a[i]=b.a[i];
+}
+bigInteger bigInteger::operator +(bigInteger b){
+   bigInteger ans;
+   for(int i=0;i<MAXN;++i){
+      ans.a[i]=a[i]+b.a[i];
+   }
+   for(int i=0,d=0,j;i<MAXN;++i){
+       j=ans.a[i]+d;
+       ans.a[i]=j%10;
+       d=j/10;
+   }
+   return ans;
+}
+bigInteger bigInteger::operator *(int b){
+   bigInteger ans;
+   for(int i=0;i<MAXN;++i){
+     ans.a[i]+=a[i]*b;
+   }
+   for(int i=0,d=0,j;i<MAXN;++i){
+      j=ans.a[i]+d;
+      ans.a[i]=j%10;
+      d=j/10;
+   }
+   return ans;
+}
+void bigInteger::print(){
+  int i;
+  for(i=MAXN-1;i>=0;--i) if(a[i]) break;
+  if(i==-1){
+    printf("0\n");
+    return ;
+  }
+  else for(;i>=0;--i) printf("%d",a[i]);
+  printf("\n");
+}
+int main(){
+  int n;
+  bigInteger b[MAXN];
+  b[1].a[0]=0;
+  b[2].a[0]=1;
+  b[3].a[0]=1;
+  for(int i=3;i<=1000;++i){
+    b[i]=b[i-1]+(b[i-2]*2);
+  }
+  while(~scanf("%d",&n)){
+    b[n].print();
+  }
+  return 0;
+}
