@@ -28,7 +28,7 @@ int main()
       }
       else
       {
-        j=lower_bound(d+1,d+ans,a[i])-d-1;//STL查找一个数列中小于a[i]的最后一个数
+        j=lower_bound(d+1,d+ans+1,a[i])-d-1;//STL查找一个数列中小于a[i]的最后一个数
                                          //这里用到了单调性d[1]<d[2]<d[3]....
         d[j+1]=a[i];
       }
